@@ -16,7 +16,7 @@ export const patientRegister = catchAsyncErrors(async (req, res, next) => {
         }
 
         const user = await User.create({ firstName, lastName, email, phone, nic, dob, gender, password, role: "Patient" });
-        generateToken(user, "User Registered!", 200, res);
+        generateToken(user, "User Registered!", 201, res);
     } catch (error) {
         return next(new ErrorHandler("Internal Server Error!", 500));
     }
@@ -45,7 +45,7 @@ export const login = catchAsyncErrors(async (req, res, next) => {
         if (role !== user.role) {
             return next(new ErrorHandler(`User Not Found With This Role!`, 400));
         }
-        generateToken(user, "Login Successfully!", 201, res);
+        generateToken(user, "Login Successfully!", 200, res);
     } catch (error) {
         return next(new ErrorHandler("Internal Server Error!", 500));
     }
@@ -58,17 +58,21 @@ export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
         return next(new ErrorHandler("Please Fill Full Form!", 400));
     }
 
-    const isRegistered = await User.findOne({ email });
-    if (isRegistered) {
-        return next(new ErrorHandler("Admin With This Email Already Exists!", 400));
-    }
+    try {
+        const isRegistered = await User.findOne({ email });
+        if (isRegistered) {
+            return next(new ErrorHandler("Admin With This Email Already Exists!", 400));
+        }
 
-    const admin = await User.create({ firstName, lastName, email, phone, nic, dob, gender, password, role: "Admin" });
-    res.status(200).json({
-        success: true,
-        message: "New Admin Registered",
-        admin,
-    });
+        const admin = await User.create({ firstName, lastName, email, phone, nic, dob, gender, password, role: "Admin" });
+        res.status(201).json({
+            success: true,
+            message: "New Admin Registered!",
+            admin,
+        });
+    } catch (error) {
+        return next(new ErrorHandler("Internal Server Error!", 500));
+    }
 });
 
 export const addNewDoctor = catchAsyncErrors(async (req, res, next) => {
@@ -80,49 +84,56 @@ export const addNewDoctor = catchAsyncErrors(async (req, res, next) => {
     if (!allowedFormats.includes(docAvatar.mimetype)) {
         return next(new ErrorHandler("File Format Not Supported!", 400));
     }
-    const { firstName, lastName, email, phone, nic, dob, gender, password, doctorDepartment,
-    } = req.body;
+    const { firstName, lastName, email, phone, nic, dob, gender, password, doctorDepartment } = req.body;
     if (!firstName || !lastName || !email || !phone || !nic || !dob || !gender || !password || !doctorDepartment || !docAvatar) {
         return next(new ErrorHandler("Please Fill Full Form!", 400));
     }
-    const isRegistered = await User.findOne({ email });
-    if (isRegistered) {
-        return next(
-            new ErrorHandler("Doctor With This Email Already Exists!", 400)
+    try {
+        const isRegistered = await User.findOne({ email });
+        if (isRegistered) {
+            return next(
+                new ErrorHandler("Doctor With This Email Already Exists!", 400)
+            );
+        }
+        const cloudinaryResponse = await cloudinary.uploader.upload(
+            docAvatar.tempFilePath, { folder: "pabs" }
         );
+        if (!cloudinaryResponse || cloudinaryResponse.error) {
+            console.error(
+                "Cloudinary Error:",
+                cloudinaryResponse.error || "Unknown Cloudinary error"
+            );
+            return next(
+                new ErrorHandler("Failed To Upload Doctor Avatar To Cloudinary", 500)
+            );
+        }
+        const doctor = await User.create({
+            firstName, lastName, email, phone, nic, dob, gender, password, role: "Doctor", doctorDepartment,
+            docAvatar: {
+                public_id: cloudinaryResponse.public_id,
+                url: cloudinaryResponse.secure_url,
+            },
+        });
+        res.status(201).json({
+            success: true,
+            message: "New Doctor Registered",
+            doctor,
+        });
+    } catch (error) {
+        return next(new ErrorHandler("Internal Server Error!", 500));
     }
-    const cloudinaryResponse = await cloudinary.uploader.upload(
-        docAvatar.tempFilePath
-    );
-    if (!cloudinaryResponse || cloudinaryResponse.error) {
-        console.error(
-            "Cloudinary Error:",
-            cloudinaryResponse.error || "Unknown Cloudinary error"
-        );
-        return next(
-            new ErrorHandler("Failed To Upload Doctor Avatar To Cloudinary", 500)
-        );
-    }
-    const doctor = await User.create({
-        firstName, lastName, email, phone, nic, dob, gender, password, role: "Doctor", doctorDepartment,
-        docAvatar: {
-            public_id: cloudinaryResponse.public_id,
-            url: cloudinaryResponse.secure_url,
-        },
-    });
-    res.status(200).json({
-        success: true,
-        message: "New Doctor Registered",
-        doctor,
-    });
 });
 
 export const getAllDoctors = catchAsyncErrors(async (req, res, next) => {
-    const doctors = await User.find({ role: "Doctor" });
-    res.status(200).json({
-        success: true,
-        doctors,
-    });
+    try {
+        const doctors = await User.find({ role: "Doctor" });
+        res.status(200).json({
+            success: true,
+            doctors,
+        });
+    } catch (error) {
+        return next(new ErrorHandler("Internal Server Error!", 500));
+    }
 });
 
 export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
@@ -135,28 +146,16 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
 
 // Logout function for dashboard admin
 export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
-    res
-        .status(201)
-        .cookie("adminToken", "", {
-            httpOnly: true,
-            expires: new Date(Date.now()),
-        })
-        .json({
-            success: true,
-            message: "Admin Logged Out Successfully.",
-        });
+    res.status(200).json({
+        success: true,
+        message: "Admin Logged Out Successfully.",
+    });
 });
 
 // Logout function for frontend patient
 export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
-    res
-        .status(201)
-        .cookie("patientToken", "", {
-            httpOnly: true,
-            expires: new Date(Date.now()),
-        })
-        .json({
-            success: true,
-            message: "Patient Logged Out Successfully.",
-        });
+    res.status(200).json({
+        success: true,
+        message: "Patient Logged Out Successfully.",
+    });
 });
