@@ -1,0 +1,20 @@
+npm create vite@latest  
+
+◇  Project name:
+│  frontend
+│
+◇  Select a framework:
+│  React
+│
+◇  Select a variant:
+│  JavaScript
+│
+◇  Scaffolding project in D:\tprojects\Patient appointment booking system\frontend...
+│
+└  Done. Now run:
+
+  cd frontend
+  npm install
+  npm run dev
+
+  npm i axios react-icons react-multi-carousel react-router-dom react-toastify
