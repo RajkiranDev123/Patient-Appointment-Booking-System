@@ -1,0 +1,3 @@
+npm init -y
+
+npm i bcrypt cloudinary cookie-parser cors dotenv mongoose express express-fileupload jsonwebtoken validator
