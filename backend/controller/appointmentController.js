@@ -37,7 +37,7 @@ export const postAppointment = catchAsyncErrors(async (req, res, next) => {
         res.status(201).json({
             success: true,
             appointment,
-            message: "Appointment Send!",
+            message: "Appointment Sent!",
         });
     } catch (error) {
         return next(new ErrorHandler("Internal Server Error!", 500));
