@@ -505,12 +505,13 @@ footer .content div:last-child div svg {
 .card .depart-name {
   margin-bottom: 30px;
   background: #e5e5e5;
-  width: 320px;
-  font-size: 24px;
+  width: 220px;
+  font-size: 18px;
   text-transform: uppercase;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;
   display: flex;
   justify-content: center;
-  padding: 12px;
+  padding: 4px;
   border-radius: 30px;
   left: 0;
   height: fit-content;
