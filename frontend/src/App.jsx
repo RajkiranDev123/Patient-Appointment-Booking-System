@@ -6,7 +6,7 @@ import Appointment from "./Pages/Appointment";
 import AboutUs from "./Pages/AboutUs";
 import Register from "./Pages/Register";
 // import Footer from "./components/Footer";
-// import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -19,10 +19,7 @@ const App = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/v1/user/patient/me",
-          {
-            withCredentials: true,
-          }
+          `${import.meta.env.VITE_API_BURL}/api/v1/user/patient/me`,
         );
         setIsAuthenticated(true);
         setUser(response.data.user);
@@ -37,7 +34,7 @@ const App = () => {
   return (
     <>
       <Router>
-        {/* <Navbar /> */}
+        <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/appointment" element={<Appointment />} />
