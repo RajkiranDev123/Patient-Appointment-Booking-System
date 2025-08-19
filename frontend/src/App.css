@@ -612,7 +612,7 @@ nav svg {
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 500px) {
   nav {
     background: #ffffffbf;
     position: fixed;

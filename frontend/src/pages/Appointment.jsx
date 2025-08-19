@@ -1,8 +1,11 @@
 import React from 'react'
-
+import AppointmentForm from "../components/AppointmentForm";
 const Appointment = () => {
   return (
-    <div>Appointment</div>
+    <>
+    <br/>
+      <AppointmentForm />
+    </>
   )
 }
 

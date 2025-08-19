@@ -1,9 +1,12 @@
-import React from 'react'
-
+import React from "react";
+import Hero from "../components/Hero";
+import Biography from "../components/Biography";
 const AboutUs = () => {
   return (
-    <div>AboutUs</div>
-  )
-}
+    <>
+   about
+    </>
+  );
+};
 
-export default AboutUs
+export default AboutUs;

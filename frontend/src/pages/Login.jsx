@@ -48,7 +48,7 @@ const Login = () => {
   return (
     <>
       <div className="container form-component login-form">
-        <h2 style={{color:"grey"}}>Sign In</h2>
+        <h2 style={{ color: "grey" }}>Sign In</h2>
         <p>Please Login To Continue</p>
 
         <form onSubmit={handleLogin}>
@@ -81,7 +81,7 @@ const Login = () => {
             </Link>
           </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button style={{background:"green"}} type="submit">Login</button>
+            <button style={{ background: "green" }} type="submit">Login</button>
           </div>
         </form>
       </div>
