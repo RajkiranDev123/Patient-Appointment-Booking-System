@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import axiosInstance from "../services/setupAxios";
+import TestCredentials from "./TestCredentials";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -53,8 +54,9 @@ const Login = () => {
     <>
       <section className="container form-component">
 
-        <h1 style={{ color: "grey" }} className="form-title">WELCOME TO RajCare!</h1>
+        <h1 style={{ color: "grey" }} className="form-title">WELCOME TO Raj Medical!</h1>
         <p>Only Admins Are Allowed!</p>
+        <TestCredentials/>
         <form onSubmit={handleLogin}>
           <input
             type="text"
