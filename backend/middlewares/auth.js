@@ -7,7 +7,6 @@ import jwt from "jsonwebtoken";
 export const isAdminAuthenticated = catchAsyncErrors(
     async (req, res, next) => {
         const authHeader = req.headers.authorization;
-        console.log(766767,authHeader)
 
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
             return next(new ErrorHandler("Unauthorized: No token provided", 401));
