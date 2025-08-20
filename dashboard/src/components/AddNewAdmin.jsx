@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Context } from "../main";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axiosInstance from "../services/setupAxios";
 
 const AddNewAdmin = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -25,7 +25,7 @@ const AddNewAdmin = () => {
       return 
     }
     try {
-      await axios
+      await axiosInstance
         .post(
           `${import.meta.env.VITE_API_BURL}/api/v1/user/admin/addnew`,
           { firstName, lastName, email, phone, nic, dob, gender, password },
@@ -51,9 +51,9 @@ const AddNewAdmin = () => {
     }
   };
 
-  // if (!isAuthenticated) {
-  //   return <Navigate to={"/login"} />;
-  // }
+  if (!isAuthenticated) {
+    return <Navigate to={"/login"} />;
+  }
 
   return (
     <section className="page">

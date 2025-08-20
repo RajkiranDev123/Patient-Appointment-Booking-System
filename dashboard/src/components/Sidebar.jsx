@@ -6,7 +6,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
 import { MdAddModerator } from "react-icons/md";
 import { IoPersonAddSharp } from "react-icons/io5";
-import axios from "axios";
+import axiosInstance from "../services/setupAxios";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { useNavigate } from "react-router-dom";
@@ -17,11 +17,14 @@ const Sidebar = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
   const handleLogout = async () => {
-    await axios
+    await axiosInstance
       .get(`${import.meta.env.VITE_API_BURL}/api/v1/user/admin/logout`)
       .then((res) => {
+        localStorage.clear()
+        console.log(67,res.data.message)
         toast.success(res.data.message);
         setIsAuthenticated(false);
+        navigateTo("/login")
       })
       .catch((err) => {
         toast.error(err.response.data.message);
@@ -54,7 +57,7 @@ const Sidebar = () => {
   return (
     <>
       <nav
-        style={!isAuthenticated ? { display: "none" } : { display: "flex" ,background:"grey"}}
+        style={isAuthenticated ?{ display: "flex" ,background:"grey"} : { display: "none" } }
         className={show ? "show sidebar" : "sidebar"}
       >
         <div className="links">

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../services/setupAxios";
 import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
@@ -10,7 +10,7 @@ const Messages = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const { data } = await axios.get(
+        const { data } = await axiosInstance.get(
           `${import.meta.env.VITE_API_BURL}/api/v1/message/getall`);
         setMessages(data.messages);
       } catch (error) {

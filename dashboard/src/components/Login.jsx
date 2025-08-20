@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
-import axios from "axios";
+import axiosInstance from "../services/setupAxios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,16 +20,19 @@ const Login = () => {
       return
     }
     try {
-      await axios
+      await axiosInstance
         .post(
           `${import.meta.env.VITE_API_BURL}/api/v1/user/login`,
           { email, password, role: "Admin" },
           {
-            withCredentials: true,
+ 
             headers: { "Content-Type": "application/json" },
           }
         )
         .then((res) => {
+          localStorage.setItem("accessToken",res.data.token)
+          localStorage.setItem("refreshToken",res.data.refreshToken)
+
           toast.success(res.data.message);
           setIsAuthenticated(true);
           navigateTo("/");

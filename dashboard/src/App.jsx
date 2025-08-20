@@ -1,3 +1,4 @@
+import axiosInstance from "../src/services/setupAxios.js"
 import { useContext, useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -24,12 +25,7 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BURL}/api/v1/user/admin/me`,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axiosInstance.get(`${import.meta.env.VITE_API_BURL}/api/v1/user/admin/me`);
         setIsAuthenticated(true);
         setAdmin(response.data.user);
       } catch (error) {
@@ -51,7 +47,7 @@ const App = () => {
         <Route path="/messages" element={<Messages />} />
         <Route path="/doctors" element={<Doctors />} />
       </Routes>
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-center" autoClose={1000}/>
     </Router>
   );
 };
