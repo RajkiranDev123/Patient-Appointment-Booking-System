@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 export const isAdminAuthenticated = catchAsyncErrors(
     async (req, res, next) => {
         const authHeader = req.headers.authorization;
+        console.log(766767,authHeader)
 
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
             return next(new ErrorHandler("Unauthorized: No token provided", 401));
@@ -17,8 +18,11 @@ export const isAdminAuthenticated = catchAsyncErrors(
                 new ErrorHandler("Dashboard User is not authenticated!", 400)
             );
         }
+        console.log(88)
         const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        // console.log("d",decoded)
         req.user = await User.findById(decoded.id);
+        // console.log(999,req.user)
         if (req.user.role !== "Admin") {
             return next(
                 new ErrorHandler(`${req.user.role} not authorized for this resource!`, 403)

@@ -3,6 +3,7 @@ import { User } from "../models/userSchema.js";
 import ErrorHandler from "../middlewares/error.js";
 import { generateToken } from "../utils/jwtToken.js";
 import cloudinary from "cloudinary";
+import jwt from "jsonwebtoken";
 
 export const patientRegister = catchAsyncErrors(async (req, res, next) => {
     const { firstName, lastName, email, phone, nic, dob, gender, password } = req.body;
@@ -23,15 +24,11 @@ export const patientRegister = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const login = catchAsyncErrors(async (req, res, next) => {
-    const { email, password, confirmPassword, role } = req.body;
-    if (!email || !password || !confirmPassword || !role) {
+    const { email, password, role } = req.body;
+    if (!email || !password || !role) {
         return next(new ErrorHandler("Please Fill Full Form!", 400));
     }
-    if (password !== confirmPassword) {
-        return next(
-            new ErrorHandler("Password & Confirm Password Do Not Match!", 400)
-        );
-    }
+
     try {
         const user = await User.findOne({ email }).select("+password");
         if (!user) {
@@ -52,8 +49,7 @@ export const login = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
-    const { firstName, lastName, email, phone, nic, dob, gender, password } =
-        req.body;
+    const { firstName, lastName, email, phone, nic, dob, gender, password } = req.body;
     if (!firstName || !lastName || !email || !phone || !nic || !dob || !gender || !password) {
         return next(new ErrorHandler("Please Fill Full Form!", 400));
     }
@@ -71,7 +67,7 @@ export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
             admin,
         });
     } catch (error) {
-        return next(new ErrorHandler("Internal Server Error!", 500));
+        return next(new ErrorHandler(error?.message || "Internal Server Error!", 500));
     }
 });
 
@@ -159,3 +155,31 @@ export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
         message: "Patient Logged Out Successfully.",
     });
 });
+
+
+
+export const refreshAccessToken = catchAsyncErrors(
+    async (req, res, next) => {
+        console.log("refresh controller")
+        const incomingRefreshToken = req.body.refreshToken
+        if (!incomingRefreshToken) {
+            return next(new ErrorHandler("No refresh token supplied!", 400))
+        }
+        try {
+            const decodedToken = jwt.verify(
+                incomingRefreshToken,
+                process.env.REFRESH_TOKEN_SECRET
+            )
+            const user = await User.findById(decodedToken?.id)
+            if (!user) {
+                return next(new ErrorHandler("Invalid refresh token!", 400))
+            }
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, { expiresIn: process.env.JWT_EXPIRE })
+            const rToken = jwt.sign({ id: user._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_EXPIRE })
+            return res.status(200).json({ message: "New access and refresh token sent!", success: true, token: token, newRefreshToken: rToken })
+        } catch (error) {
+            return res.status(500).json({ message: error.message, success: false })
+        }
+
+    }
+)
