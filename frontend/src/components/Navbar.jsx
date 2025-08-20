@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
-import axios from "axios";
+import axiosInstance from "../services/setupAxios";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 
@@ -10,11 +10,14 @@ const Navbar = () => {
     const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
     const handleLogout = async () => {
-        await axios
-            .get(`${import.meta.env.VITE_API_BURL}/api/v1/user/patient/logout`)
+        await axiosInstance
+            .get(`/api/v1/user/patient/logout`)
             .then((res) => {
+                localStorage.clear()
                 toast.success(res.data.message);
                 setIsAuthenticated(false);
+                navigateTo("/login");
+
             })
             .catch((err) => {
                 toast.error(err.response.data.message);
@@ -31,7 +34,7 @@ const Navbar = () => {
         <>
             <nav className={"container"}>
                 <div className="logo">
-                  <p>Raj Medical</p>
+                    <p>Raj Medical</p>
                 </div>
                 <div className={show ? "navLinks showmenu" : "navLinks"}>
                     <div className="links">
@@ -50,7 +53,7 @@ const Navbar = () => {
                             LOGOUT
                         </button>
                     ) : (
-                        <button style={{background:"green"}} className="loginBtn btn" onClick={goToLogin}>
+                        <button style={{ background: "green" }} className="loginBtn btn" onClick={goToLogin}>
                             LOGIN
                         </button>
                     )}

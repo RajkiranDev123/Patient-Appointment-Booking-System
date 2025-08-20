@@ -1,8 +1,9 @@
-import axios from "axios";
+import axiosInstance from "../services/setupAxios";
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, useNavigate, Navigate } from "react-router-dom";
+import TestCredentials from "./TestCredentials"
 
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -20,20 +21,23 @@ const Login = () => {
       return
     }
     try {
-      await axios
+      await axiosInstance
         .post(
-          `${import.meta.env.VITE_API_BURL}/api/v1/user/login`,
+          `/api/v1/user/login`,
           { email, password, role: "Patient" },
           {
             headers: { "Content-Type": "application/json" },
           }
         )
         .then((res) => {
+          localStorage.setItem("accessToken", res.data.token)
+          localStorage.setItem("refreshToken", res.data.refreshToken)
           toast.success(res.data.message);
           setIsAuthenticated(true);
-          navigateTo("/");
           setEmail("");
           setPassword("");
+          navigateTo("/");
+
 
         });
     } catch (error) {
@@ -50,6 +54,8 @@ const Login = () => {
       <div className="container form-component login-form">
         <h2 style={{ color: "grey" }}>Sign In</h2>
         <p>Please Login To Continue</p>
+
+        <TestCredentials />
 
         <form onSubmit={handleLogin}>
           <input

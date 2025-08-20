@@ -4,12 +4,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import Appointment from "./Pages/Appointment";
 import AboutUs from "./Pages/AboutUs";
-import Register from "./Pages/Register";
+import Register from "./pages/Register";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
+import axiosInstance from "./services/setupAxios";
 import { Context } from "./main";
 import Login from "./Pages/Login";
 const App = () => {
@@ -18,8 +18,8 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_BURL}/api/v1/user/patient/me`,
+        const response = await axiosInstance.get(
+          `/api/v1/user/patient/me`,
         );
         setIsAuthenticated(true);
         setUser(response.data.user);

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../services/setupAxios";
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
@@ -25,9 +25,9 @@ const Register = () => {
       return
     }
     try {
-      await axios
+      await axiosInstance
         .post(
-          `${import.meta.env.VITE_API_BURL}/api/v1/user/patient/register`,
+          `/api/v1/user/patient/register`,
           { firstName, lastName, email, phone, nic, dob, gender, password },
           {
 
@@ -36,8 +36,8 @@ const Register = () => {
         )
         .then((res) => {
           toast.success(res.data.message);
-          setIsAuthenticated(true);
-          navigateTo("/");
+          // setIsAuthenticated(true);
+          // navigateTo("/");
           setFirstName("");
           setLastName("");
           setEmail("");
@@ -46,6 +46,7 @@ const Register = () => {
           setDob("");
           setGender("");
           setPassword("");
+          navigateTo("/login")
         });
     } catch (error) {
       toast.error(error.response.data.message);
