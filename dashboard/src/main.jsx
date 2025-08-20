@@ -9,9 +9,7 @@ const AppWrapper = () => {
   const [admin, setAdmin] = useState({});
 
   return (
-    <Context.Provider
-      value={{ isAuthenticated, setIsAuthenticated, admin, setAdmin }}
-    >
+    <Context.Provider value={{ isAuthenticated, setIsAuthenticated, admin, setAdmin }}>
       <App />
     </Context.Provider>
   );

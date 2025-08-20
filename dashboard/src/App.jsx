@@ -19,14 +19,13 @@ import AddNewAdmin from "./components/AddNewAdmin";
 import "./App.css";
 
 const App = () => {
-  const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
-    useContext(Context);
+  const { isAuthenticated, setIsAuthenticated, admin, setAdmin } = useContext(Context);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/v1/user/admin/me",
+          `${import.meta.env.VITE_API_BURL}/api/v1/user/admin/me`,
           {
             withCredentials: true,
           }
