@@ -117,6 +117,7 @@ export const addNewDoctor = catchAsyncErrors(async (req, res, next) => {
             doctor,
         });
     } catch (error) {
+        console.log(error?.message)
         return next(new ErrorHandler("Internal Server Error!", 500));
     }
 });
