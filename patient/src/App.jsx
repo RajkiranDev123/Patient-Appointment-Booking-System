@@ -33,6 +33,8 @@ const App = () => {
 
   return (
     <>
+      <ToastContainer position="top-center" autoClose={1000} />
+
       <Router>
         <Navbar />
         <Routes>
@@ -43,8 +45,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
         </Routes>
         <Footer />
-        <ToastContainer position="top-center" autoClose={1000} />
       </Router>
+
     </>
   );
 };

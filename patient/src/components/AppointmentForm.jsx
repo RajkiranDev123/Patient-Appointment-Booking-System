@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../services/setupAxios"
 import { useEffect } from "react";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -33,7 +33,7 @@ const AppointmentForm = () => {
     const [doctors, setDoctors] = useState([]);
     useEffect(() => {
         const fetchDoctors = async () => {
-            const { data } = await axios.get(
+            const { data } = await axiosInstance.get(
                 `${import.meta.env.VITE_API_BURL}/api/v1/user/doctors`,
 
             );

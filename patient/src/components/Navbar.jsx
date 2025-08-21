@@ -4,7 +4,8 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import axiosInstance from "../services/setupAxios";
 import { toast } from "react-toastify";
 import { Context } from "../main";
-
+import { FaHome } from "react-icons/fa";
+import { TfiWrite } from "react-icons/tfi";
 const Navbar = () => {
     const [show, setShow] = useState(false);
     const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -13,9 +14,10 @@ const Navbar = () => {
         await axiosInstance
             .get(`/api/v1/user/patient/logout`)
             .then((res) => {
+                setIsAuthenticated(false);
+
                 localStorage.clear()
                 toast.success(res.data.message);
-                setIsAuthenticated(false);
                 navigateTo("/login");
 
             })
@@ -38,18 +40,18 @@ const Navbar = () => {
                 </div>
                 <div className={show ? "navLinks showmenu" : "navLinks"}>
                     <div className="links">
-                        <Link to={"/"} onClick={() => setShow(!show)}>
-                            Home
+                        <Link style={{ display: "flex", alignItems: "center" }} to={"/"} onClick={() => setShow(!show)}>
+                            <FaHome size={20} />  Home
                         </Link>
-                        <Link to={"/appointment"} onClick={() => setShow(!show)}>
-                            Appointment
-                        </Link>
+                        {isAuthenticated && <Link style={{ display: "flex", alignItems: "center",gap:2 }} to={"/appointment"} onClick={() => setShow(!show)}>
+                            <TfiWrite size={18} />   Appointment
+                        </Link>}
                         {/* <Link to={"/about"} onClick={() => setShow(!show)}>
                             About Us
                         </Link> */}
                     </div>
                     {isAuthenticated ? (
-                        <button className="logoutBtn btn" onClick={handleLogout}>
+                        <button style={{background:"red",padding:5,fontSize:14}} className="logoutBtn btn" onClick={handleLogout}>
                             LOGOUT
                         </button>
                     ) : (

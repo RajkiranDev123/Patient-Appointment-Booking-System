@@ -19,6 +19,7 @@ export const patientRegister = catchAsyncErrors(async (req, res, next) => {
         const user = await User.create({ firstName, lastName, email, phone, nic, dob, gender, password, role: "Patient" });
         generateToken(user, "User Registered!", 201, res);
     } catch (error) {
+        console.log(error?.message)
         return next(new ErrorHandler("Internal Server Error!", 500));
     }
 });

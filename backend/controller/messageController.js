@@ -3,6 +3,7 @@ import ErrorHandler from "../middlewares/error.js";
 import { Message } from "../models/messageSchema.js";
 
 export const sendMessage = catchAsyncErrors(async (req, res, next) => {
+
     const { firstName, lastName, email, phone, message } = req.body;
     if (!firstName || !lastName || !email || !phone || !message) {
         return next(new ErrorHandler("Please fill All fields!", 400));
@@ -14,7 +15,8 @@ export const sendMessage = catchAsyncErrors(async (req, res, next) => {
             message: "Message Sent!",
         });
     } catch (error) {
-        return next(new ErrorHandler("Internal Server Error!", 500));
+        console.log(error)
+        return next(new ErrorHandler(error?.message || "Internal Server Error!", 500));
     }
 });
 

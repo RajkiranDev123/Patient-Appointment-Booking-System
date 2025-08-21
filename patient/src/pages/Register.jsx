@@ -24,6 +24,18 @@ const Register = () => {
       toast.error("All fields are required!")
       return
     }
+    if (nic.length < 12) {
+      toast.error("Nic must be 12 numbers!")
+      return
+    }
+    if (password.length < 8) {
+      toast.error("Password must be 8 characters!")
+      return
+    }
+    if (firstName.length < 3 || lastName.length < 3) {
+      toast.error("First name or Last name must be 3 characters!")
+      return
+    }
     try {
       await axiosInstance
         .post(
@@ -135,7 +147,7 @@ const Register = () => {
             </Link>
           </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button style={{ background: "red" }} type="submit">Register</button>
+            <button style={{ background: "red", cursor: "pointer" }} type="submit">Register</button>
           </div>
         </form>
       </div>

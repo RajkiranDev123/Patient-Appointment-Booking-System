@@ -46,7 +46,7 @@ const Footer = () => {
             {/* <img src="/logo.png" alt="logo" className="logo-img" /> */}
           </div>
           <div>
-            <h4>Quick Links</h4>
+            <h4 style={{color:"grey"}}>Quick Links</h4>
             <ul>
               <Link to={"/"}>Home</Link>
               <Link to={"/appointment"}>Appointment</Link>
@@ -54,7 +54,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h4>Hours</h4>
+            <h4 style={{color:"grey"}}>Hours</h4>
             <ul>
               {hours.map((element) => (
                 <li key={element.id}>
@@ -65,7 +65,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <h4>Contact</h4>
+            <h4 style={{color:"grey"}}>Contact</h4>
             <div>
               <FaPhone />
               <span style={{fontSize:14}}>6767767676</span>

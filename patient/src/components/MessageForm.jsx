@@ -1,5 +1,6 @@
 import axios from "axios";
-import React, { useState } from "react";
+import  { useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const MessageForm = () => {
@@ -12,7 +13,7 @@ const MessageForm = () => {
   const handleMessage = async (e) => {
 
     e.preventDefault();
-    if (!firstName || !lastName || !email || phone || message) {
+    if (!firstName || !lastName || !email || !phone || !message) {
       toast.error("All fields are required!")
       return
 
@@ -43,6 +44,13 @@ const MessageForm = () => {
   return (
     <>
       <div className="container form-component message-form">
+        <p>How to start ?</p>
+        <p>1. First <Link to={"/register"}>Register</Link> and then login!</p>
+        <p>2. Go to appointment for booking appointment!</p>
+
+        <p style={{textAlign:""}}>Or Send us a message! We will get back to you!</p>
+
+
         <h2 style={{ color: "grey" }}>Send Us A Message</h2>
         <form onSubmit={handleMessage}>
           <div>
