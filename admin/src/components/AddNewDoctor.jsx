@@ -47,6 +47,11 @@ const AddNewDoctor = () => {
     e.preventDefault();
     if (!firstName || !lastName || !email || !phone || !password || !nic || !dob || !gender || !doctorDepartment || !docAvatar) {
       toast.error("All fields are required!")
+      return
+    }
+    if (firstName?.length < 3 || lastName?.length < 3) {
+      toast.error("First or Last name must be 3 characters!")
+      return
     }
     try {
       const formData = new FormData();
@@ -89,8 +94,8 @@ const AddNewDoctor = () => {
   return (
     <section className="page">
       <section className="container add-doctor-form">
-   
-        <h1 style={{color:"grey"}} className="form-title">REGISTER A NEW DOCTOR</h1>
+
+        <h1 style={{ color: "grey" }} className="form-title">REGISTER A NEW DOCTOR</h1>
         <form onSubmit={handleAddNewDoctor}>
           <div className="first-wrapper">
             <div>
@@ -168,7 +173,7 @@ const AddNewDoctor = () => {
                   );
                 })}
               </select>
-              <button style={{background:"red"}} type="submit">Register New Doctor</button>
+              <button style={{ background: "red" }} type="submit">Register New Doctor</button>
             </div>
           </div>
         </form>

@@ -53,7 +53,7 @@ const Dashboard = () => {
       <section className="dashboard page">
         <div className="banner">
           <div className="firstBox">
-            <img src="/doc.png" alt="docImg" />
+            {/* <img src="/doc.png" alt="docImg" /> */}
             <div className="content">
               <div>
                 <p>Hello ,</p>
@@ -63,9 +63,7 @@ const Dashboard = () => {
                 </h5>
               </div>
               <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Facilis, nam molestias. Eaque molestiae ipsam commodi neque.
-                Assumenda repellendus necessitatibus itaque.
+                welcome
               </p>
             </div>
           </div>

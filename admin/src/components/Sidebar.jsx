@@ -21,9 +21,10 @@ const Sidebar = () => {
       .get(`${import.meta.env.VITE_API_BURL}/api/v1/user/admin/logout`)
       .then((res) => {
         localStorage.clear()
+        setIsAuthenticated(false);
+
         console.log(67,res.data.message)
         toast.success(res.data.message);
-        setIsAuthenticated(false);
         navigateTo("/login")
       })
       .catch((err) => {
