@@ -44,13 +44,18 @@ const AppointmentForm = () => {
     }, []);
     const handleAppointment = async (e) => {
         e.preventDefault();
-        if (!firstName || !lastName || !email || !phone || !nic || !dob || !gender || !appointmentDate || !department || !doctorFirstName || !doctorLastName || !hasVisited || !address) {
+        if (!firstName || !lastName || !email || !phone || !nic || !dob || !gender ||
+            !appointmentDate || !department || !doctorFirstName || !doctorLastName || !address) {
             toast.error("All fields are required!")
+            return
+        }
+        if (phone?.length < 10 || nic?.length < 12) {
+            toast.error("phone must be 10 digits or nic must be 12!")
             return
         }
         try {
             const hasVisitedBool = Boolean(hasVisited);
-            const { data } = await axios.post(
+            const { data } = await axiosInstance.post(
                 `${import.meta.env.VITE_API_BURL}/api/v1/appointment/post`,
                 {
                     firstName,

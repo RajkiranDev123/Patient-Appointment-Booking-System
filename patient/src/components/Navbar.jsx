@@ -10,21 +10,15 @@ const Navbar = () => {
     const [show, setShow] = useState(false);
     const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
-    const handleLogout = async () => {
-        await axiosInstance
-            .get(`/api/v1/user/patient/logout`)
-            .then((res) => {
-                setIsAuthenticated(false);
-
-                localStorage.clear()
-                toast.success(res.data.message);
-                navigateTo("/login");
-
-            })
-            .catch((err) => {
-                toast.error(err.response.data.message);
-            });
-    };
+ 
+  const handleLogout =  () => {
+ 
+        localStorage.clear()
+        setIsAuthenticated(false);
+        toast.success("Logout done!");
+        navigateTo("/login")
+ 
+  };
 
     const navigateTo = useNavigate();
 
