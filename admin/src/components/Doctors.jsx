@@ -27,7 +27,7 @@ const Doctors = () => {
   // }
   return (
     <section className="page doctors">
-      <h1 style={{color:"grey"}}>DOCTORS</h1>
+      <h1 style={{color:"grey",textAlign:"center"}}>Our Doctors</h1>
       <div className="banner">
         {doctors && doctors.length > 0 ? (
           doctors.map((element) => {
@@ -45,15 +45,11 @@ const Doctors = () => {
                   <p>
                     Phone: <span>{element.phone}</span>
                   </p>
-                  <p>
-                    DOB: <span>{element.dob.substring(0, 10)}</span>
-                  </p>
+            
                   <p>
                     Department: <span>{element.doctorDepartment}</span>
                   </p>
-                  <p>
-                    NIC: <span>{element.nic}</span>
-                  </p>
+               
                   <p>
                     Gender: <span>{element.gender}</span>
                   </p>

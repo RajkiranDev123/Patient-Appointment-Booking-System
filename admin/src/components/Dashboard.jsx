@@ -1,26 +1,49 @@
 import axiosInstance from "../services/setupAxios.js";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Context } from "../main";
 import { Navigate } from "react-router-dom";
 
 import { toast } from "react-toastify";
-import { GoCheckCircleFill } from "react-icons/go";
-import { AiFillCloseCircle } from "react-icons/ai";
+
+
+//pagination
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
 
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const { data } = await axiosInstance.get(
-          `${import.meta.env.VITE_API_BURL}/api/v1/appointment/getall`,
-        );
-        setAppointments(data.appointments);
-      } catch (error) {
-        setAppointments([]);
+  const fetchAppointments = async (val) => {
+    try {
+      const { data } = await axiosInstance.get(
+        `${import.meta.env.VITE_API_BURL}/api/v1/appointment/getall`, {
+        headers: {
+          "page": val
+        }
       }
-    };
+      );
+      setAppointments(data.appointments);
+      setPageCount(data?.pagination.pageCount)
+    } catch (error) {
+      setAppointments([]);
+    }
+  };
+
+  // pagination
+  const [page, setPage] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
+  const changePage = (event, value) => {
+    fetchAppointments(value)
+
+    setPage(value)
+
+  }
+  //////////////////////////////
+
+
+
+  useEffect(() => {
+
     fetchAppointments();
   }, []);
 
@@ -76,17 +99,17 @@ const Dashboard = () => {
             <h3>10</h3>
           </div>
         </div>
-        <div className="banner">
-          <h5>Appointments</h5>
+        <div style={{ overflowX: "scroll" }} className="banner">
+          <h5 style={{ color: "grey", fontSize: 14 }}>Appointments</h5>
           <table>
             <thead>
               <tr>
-                <th>Patient</th>
-                <th>Date</th>
-                <th>Doctor</th>
-                <th>Department</th>
-                <th>Status</th>
-                <th>Visited</th>
+                <th style={{ fontSize: 14 }}>Patient</th>
+                <th style={{ fontSize: 14 }}>Date</th>
+                <th style={{ fontSize: 14 }}>Doctor</th>
+                <th style={{ fontSize: 14 }}>Department</th>
+                <th style={{ fontSize: 14 }}>Change Status</th>
+                {/* <th>Visited</th> */}
               </tr>
             </thead>
             <tbody>
@@ -122,12 +145,22 @@ const Dashboard = () => {
                         </option>
                       </select>
                     </td>
-                    <td>{appointment.hasVisited === true ? <GoCheckCircleFill className="green" /> : <AiFillCloseCircle className="red" />}</td>
+                    {/* <td>{appointment.hasVisited === true ? <GoCheckCircleFill className="green" /> : <AiFillCloseCircle className="red" />}</td> */}
                   </tr>
                 ))
                 : "No Appointments Found!"}
             </tbody>
+
           </table>
+          {/* pagination */}
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Stack spacing={2}>
+              <Pagination color="primary" onChange={changePage} page={page} count={pageCount} />
+            </Stack>
+
+          </div>
+          {/* pagination */}
+
 
           { }
         </div>

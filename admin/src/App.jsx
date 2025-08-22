@@ -33,7 +33,11 @@ const App = () => {
         setAdmin({});
       }
     };
-    fetchUser();
+
+    if (localStorage.getItem("accessToken")) {
+      fetchUser();
+
+    }
   }, [isAuthenticated]);
 
   return (
@@ -47,7 +51,7 @@ const App = () => {
         <Route path="/messages" element={<Messages />} />
         <Route path="/doctors" element={<Doctors />} />
       </Routes>
-      <ToastContainer position="top-center" autoClose={1000}/>
+      <ToastContainer position="top-center" autoClose={1000} />
     </Router>
   );
 };

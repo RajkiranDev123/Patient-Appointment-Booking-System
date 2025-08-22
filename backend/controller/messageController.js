@@ -21,11 +21,19 @@ export const sendMessage = catchAsyncErrors(async (req, res, next) => {
 });
 
 export const getAllMessages = catchAsyncErrors(async (req, res, next) => {
-    const messages = await Message.find();
+    const page = req.headers.page || 1
+    const ITEM_PER_PAGE = 5
+
     try {
+        const totalDocs = await Message.countDocuments()
+        const pageCount = Math.ceil(totalDocs / ITEM_PER_PAGE)//pageCount is total pages 10/5=2 pages
+        const skip = (page - 1) * ITEM_PER_PAGE //(1-1)*5 => 0*5==0
+
+        const messages = await Message.find().skip(skip).limit(ITEM_PER_PAGE)
         res.status(200).json({
             success: true,
             messages,
+            pagination: { pageCount, totalMessages: totalDocs }
         });
     } catch (error) {
         return next(new ErrorHandler("Internal Server Error!", 500));

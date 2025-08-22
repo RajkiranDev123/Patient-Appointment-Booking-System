@@ -28,7 +28,10 @@ const App = () => {
         setUser({});
       }
     };
-    fetchUser();
+    if (localStorage.getItem("accessToken")) {
+      fetchUser();
+
+    }
   }, [isAuthenticated]);
 
   return (

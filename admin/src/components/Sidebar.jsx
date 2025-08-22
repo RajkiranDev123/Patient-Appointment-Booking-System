@@ -1,4 +1,4 @@
-import  { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { TiHome } from "react-icons/ti";
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { AiFillMessage } from "react-icons/ai";
@@ -16,13 +16,14 @@ const Sidebar = () => {
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
-  const handleLogout =  () => {
- 
-        localStorage.clear()
-        setIsAuthenticated(false);
-        toast.success("Logout done!");
-        navigateTo("/login")
- 
+  const handleLogout = () => {
+
+    localStorage.clear()
+
+    toast.success("Logout done!");
+    setIsAuthenticated(false);
+    navigateTo("/login")
+
   };
 
   const navigateTo = useNavigate();
@@ -51,7 +52,7 @@ const Sidebar = () => {
   return (
     <>
       <nav
-        style={isAuthenticated ?{ display: "flex" ,background:"grey"} : { display: "none" } }
+        style={isAuthenticated ? { display: "flex", background: "" } : { display: "none" }}
         className={show ? "show sidebar" : "sidebar"}
       >
         <div className="links">
@@ -67,7 +68,7 @@ const Sidebar = () => {
         className="wrapper"
         style={!isAuthenticated ? { display: "none" } : { display: "flex" }}
       >
-        <GiHamburgerMenu className="hamburger" onClick={() => setShow(!show)} />
+        <GiHamburgerMenu size={17} className="hamburger" onClick={() => setShow(!show)} />
       </div>
     </>
   );
