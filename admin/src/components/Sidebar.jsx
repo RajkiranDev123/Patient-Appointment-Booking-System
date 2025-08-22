@@ -16,20 +16,13 @@ const Sidebar = () => {
 
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
-  const handleLogout = async () => {
-    await axiosInstance
-      .get(`${import.meta.env.VITE_API_BURL}/api/v1/user/admin/logout`)
-      .then((res) => {
+  const handleLogout =  () => {
+ 
         localStorage.clear()
         setIsAuthenticated(false);
-
-        console.log(67,res.data.message)
-        toast.success(res.data.message);
+        toast.success("Logout done!");
         navigateTo("/login")
-      })
-      .catch((err) => {
-        toast.error(err.response.data.message);
-      });
+ 
   };
 
   const navigateTo = useNavigate();
