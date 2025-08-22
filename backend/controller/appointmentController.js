@@ -40,6 +40,7 @@ export const postAppointment = catchAsyncErrors(async (req, res, next) => {
             message: "Appointment Sent!",
         });
     } catch (error) {
+        console.log(error)
         return next(new ErrorHandler("Internal Server Error!", 500));
     }
 });
