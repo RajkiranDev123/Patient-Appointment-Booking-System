@@ -8,6 +8,8 @@ import { errorMiddleware } from "./middlewares/error.js";
 import messageRouter from "./router/messageRouter.js";
 import userRouter from "./router/userRouter.js";
 import appointmentRouter from "./router/appointmentRouter.js";
+import ai from "./router/aiRouter.js";
+
 
 const app = express();
 config({ path: "./.env" });
@@ -27,6 +29,8 @@ app.use(
 app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/appointment", appointmentRouter);
+app.use("/api/v1/ai", ai);
+
 
 dbConnection();
 
