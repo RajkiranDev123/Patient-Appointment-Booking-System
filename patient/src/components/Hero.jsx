@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Box from '@mui/material/Box';
 import Modal1 from '@mui/material/Modal';
 
-
+import axios from "axios"
 const style = {
   position: 'absolute',
   top: '50%',
@@ -21,11 +21,27 @@ const style = {
 const Hero = ({ }) => {
   const [open1, setOpen1] = useState(false);
   const [fever, setFever] = useState("");
+  const [result, setResult] = useState("");
 
-  const handleClose1 = () => { setOpen1(false); setFever("") };
+
+  const handleClose1 = () => { setOpen1(false); setFever(""); setResult("") };
   const handleOpen1 = () => {
     setOpen1(true);
   }
+  // 
+
+  const ask = async () => {
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_API_BURL}/api/v1/ai/ask`, {
+      question: fever
+    }
+
+    );
+    // console.log(data)
+    setResult(data?.data);
+
+  };
+
   return (
     <>
       <div className="hero container">
@@ -51,7 +67,7 @@ const Hero = ({ }) => {
       <div style={{ gap: 16, justifyContent: "center", border: "1px solid grey", padding: 14, display: "flex", flexWrap: "wrap" }}>
 
         <div>
-          <p onClick={handleOpen1} style={{ padding: 3, background: "green", borderRadius: 4, color: "white", cursor: "pointer" }}>Click here for AI doctor for tablets and fruits!</p>
+          <p onClick={handleOpen1} style={{fontWeight:"bold", padding: 3, background: "green", borderRadius: 4, color: "white", cursor: "pointer" }}>Click here for AI doctor for best food and tablets!</p>
         </div>
 
 
@@ -74,7 +90,7 @@ const Hero = ({ }) => {
           style=
           {{
             outline: "none",
-            padding: 5, color: "grey", background: "white", width: 360, height: 400,
+            padding: 5, color: "grey", background: "white", width: 280, height: 300,
             position: "absolute", top: "50%", left: "50%", transform: 'translate(-50%, -50%)', zIndex: 5
           }}>
           <p onClick={handleClose1} style={{ cursor: "pointer", display: "flex", justifyContent: "flex-end" }}>X</p>
@@ -84,17 +100,17 @@ const Hero = ({ }) => {
               style={{
                 width: "100%", padding: 9, borderRadius: 3, outline: "none", fontWeight: "bold", marginTop: 5
               }}
-              placeholder="type your fever... like cancer,head pain etc!" />
+              placeholder="type fever here... like : head pain..." />
 
-            <button
+            <button onClick={() => ask()}
               style={{ margin: 5, padding: 5, width: "100%", border: "none", background: "green", color: "white", cursor: "pointer" }}>
-             {fever? "Submit":"type you fever above!"}
+              {fever ? "Click here to ask" : "type you fever above!"}
             </button>
             <div >
-              <p>Result</p>
-              <div style={{ overflowY: "scroll", height: 250 }}>
-                iouytdf
-              </div>
+              <p>Result : </p>
+              {result && <div style={{ overflowY: "scroll", height: 150,fontSize:14,fontWeight:"bold" }}>
+                {result}
+              </div>}
             </div>
 
 
