@@ -11,15 +11,15 @@ const Navbar = () => {
     const [show, setShow] = useState(false);
     const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
- 
-  const handleLogout =  () => {
- 
+
+    const handleLogout = () => {
+
         localStorage.clear()
         setIsAuthenticated(false);
         toast.success("Logout done!");
         navigateTo("/login")
- 
-  };
+
+    };
 
     const navigateTo = useNavigate();
 
@@ -31,22 +31,21 @@ const Navbar = () => {
         <>
             <nav className={"container"}>
                 <div className="logo">
-                    <p style={{fontWeight:"bold",color:"green"}}> <GiSyringe/>Raj Medical</p>
+                    <p style={{ fontWeight: "bold", color: "green" }}> <GiSyringe />Raj Medical</p>
                 </div>
                 <div className={!show ? "navLinks showmenu" : "navLinks"}>
                     <div className="links">
                         <Link style={{ display: "flex", alignItems: "center" }} to={"/"} onClick={() => setShow(!show)}>
                             <FaHome size={20} />  Home
                         </Link>
-                        {isAuthenticated && <Link style={{ display: "flex", alignItems: "center",gap:2 }} to={"/appointment"} onClick={() => setShow(!show)}>
+                        {isAuthenticated && <Link style={{ display: "flex", alignItems: "center", gap: 2 }} to={"/appointment"} onClick={() => setShow(!show)}>
                             <TfiWrite size={18} />   Appointment
                         </Link>}
-                        {/* <Link to={"/about"} onClick={() => setShow(!show)}>
-                            About Us
-                        </Link> */}
+
+                        <a href="https://rajadminmedicalai.netlify.app/login" target="_blank" rel="noopener noreferrer">Admin Panel</a>
                     </div>
                     {isAuthenticated ? (
-                        <button style={{borderRadius:3,background:"red",padding:5,fontSize:14}} className="logoutBtn btn" onClick={handleLogout}>
+                        <button style={{ borderRadius: 3, background: "red", padding: 5, fontSize: 14 }} className="logoutBtn btn" onClick={handleLogout}>
                             LOGOUT
                         </button>
                     ) : (
