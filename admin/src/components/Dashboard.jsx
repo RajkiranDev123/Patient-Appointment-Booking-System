@@ -12,6 +12,10 @@ import Stack from '@mui/material/Stack';
 
 const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
+  const [meta, setMeta] = useState({});
+  const [metaLoading, setMetaLoading] = useState(false);
+
+
 
   const fetchAppointments = async (val) => {
     try {
@@ -29,6 +33,27 @@ const Dashboard = () => {
     }
   };
 
+  //meta
+  const fetchMeta = async (val) => {
+    try {
+      setMetaLoading(true)
+      const { data } = await axiosInstance.get(
+        `${import.meta.env.VITE_API_BURL}/api/v1/appointment/meta`, {
+        headers: {
+          "date-range": val
+        }
+      }
+      );
+      setMeta(data?.counts)
+      setMetaLoading(false)
+
+    } catch (error) {
+      setMetaLoading(false)
+      console.log(error)
+    }
+  };
+  //
+
   // pagination
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
@@ -45,6 +70,7 @@ const Dashboard = () => {
   useEffect(() => {
 
     fetchAppointments();
+    fetchMeta()
   }, []);
 
   const handleUpdateStatus = async (appointmentId, status) => {
@@ -85,18 +111,19 @@ const Dashboard = () => {
                     `${admin?.firstName} ${admin?.lastName}`}{" "}
                 </h5>
               </div>
-              <p>
-                welcome
+              <p style={{ color: "white", fontWeight: "bold" }}>
+                Start managing!
               </p>
             </div>
           </div>
           <div className="secondBox">
             <p>Total Appointments</p>
-            <h3>1500</h3>
+        {metaLoading ? <span style={{color:"white",textAlign:"center"}}>Loading...</span> : <h3 style={{ textAlign: "center" }}>{meta?.totalAppointments}</h3>}
           </div>
           <div className="thirdBox">
-            <p>Registered Doctors</p>
-            <h3>10</h3>
+            {metaLoading ? <span style={{color:"grey",textAlign:"center"}}>Loading...</span> : <><p style={{ color: "#EAB308" }}>Pending : {meta?.pendingCounts}</p>
+              <p style={{ color: "green" }}>Accepted : {meta?.acceptedCounts}</p>
+              <p>Rejected : {meta?.rejectedCounts}</p></>}
           </div>
         </div>
         <div style={{ overflowX: "scroll" }} className="banner">
@@ -113,8 +140,8 @@ const Dashboard = () => {
               </tr>
             </thead>
             <tbody>
-              {appointments && appointments.length > 0
-                ? appointments.map((appointment) => (
+              {appointments && appointments.length > 0 ? (
+                appointments.map((appointment) => (
                   <tr key={appointment._id}>
                     <td>{`${appointment.firstName} ${appointment.lastName}`}</td>
                     <td>{appointment.appointment_date.substring(0, 16)}</td>
@@ -134,22 +161,22 @@ const Dashboard = () => {
                           handleUpdateStatus(appointment._id, e.target.value)
                         }
                       >
-                        <option value="Pending" className="value-pending">
-                          Pending
-                        </option>
-                        <option value="Accepted" className="value-accepted">
-                          Accepted
-                        </option>
-                        <option value="Rejected" className="value-rejected">
-                          Rejected
-                        </option>
+                        <option value="Pending" className="value-pending">Pending</option>
+                        <option value="Accepted" className="value-accepted">Accepted</option>
+                        <option value="Rejected" className="value-rejected">Rejected</option>
                       </select>
                     </td>
-                    {/* <td>{appointment.hasVisited === true ? <GoCheckCircleFill className="green" /> : <AiFillCloseCircle className="red" />}</td> */}
                   </tr>
                 ))
-                : "No Appointments Found!"}
+              ) : (
+                <tr>
+                  <td colSpan={5} style={{ textAlign: "center", padding: "1rem" }}>
+                    No Appointments Found!
+                  </td>
+                </tr>
+              )}
             </tbody>
+
 
           </table>
           {/* pagination */}

@@ -15,8 +15,11 @@ const AppWrapper = () => {
   );
 };
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+const container = document.getElementById("root");
+const root = ReactDOM.createRoot(container);
+
+root.render(
   // <React.StrictMode>
-    <AppWrapper />
+  <AppWrapper />
   // </React.StrictMode>
 );

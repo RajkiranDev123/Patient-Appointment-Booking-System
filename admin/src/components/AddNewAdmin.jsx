@@ -3,7 +3,7 @@ import { Context } from "../main";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axiosInstance from "../services/setupAxios";
-
+import "./loader.css"
 const AddNewAdmin = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
@@ -15,16 +15,18 @@ const AddNewAdmin = () => {
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigateTo = useNavigate();
 
   const handleAddNewAdmin = async (e) => {
     e.preventDefault();
-    if(!firstName||!lastName||!email||!phone||!nic||!dob||!gender||!password){
+    if (!firstName || !lastName || !email || !phone || !nic || !dob || !gender || !password) {
       toast.error("All field are required!")
-      return 
+      return
     }
     try {
+      setLoading(true)
       await axiosInstance
         .post(
           `${import.meta.env.VITE_API_BURL}/api/v1/user/admin/addnew`,
@@ -36,6 +38,7 @@ const AddNewAdmin = () => {
         .then((res) => {
           toast.success(res.data.message);
           setIsAuthenticated(true);
+          setLoading(false)
           navigateTo("/");
           setFirstName("");
           setLastName("");
@@ -47,6 +50,7 @@ const AddNewAdmin = () => {
           setPassword("");
         });
     } catch (error) {
+      setLoading(false)
       toast.error(error.response.data.message);
     }
   };
@@ -59,7 +63,7 @@ const AddNewAdmin = () => {
     <section className="page">
       <section className="container form-component add-admin-form">
 
-        <h1 style={{color:"grey"}} className="form-title">ADD NEW ADMIN</h1>
+        <h1 style={{ color: "grey" }} className="form-title">ADD NEW ADMIN</h1>
         <form onSubmit={handleAddNewAdmin}>
           <div>
             <input
@@ -117,7 +121,9 @@ const AddNewAdmin = () => {
             />
           </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button style={{background:"red"}} type="submit">ADD NEW ADMIN</button>
+            <button style={{ background: "red" }} type="submit">
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Add New Admin"}
+            </button>
           </div>
         </form>
       </section>

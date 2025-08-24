@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import axiosInstance from "../services/setupAxios";
-
+import "./loader.css"
 const AddNewDoctor = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
@@ -18,7 +18,7 @@ const AddNewDoctor = () => {
   const [doctorDepartment, setDoctorDepartment] = useState("");
   const [docAvatar, setDocAvatar] = useState("");
   const [docAvatarPreview, setDocAvatarPreview] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const navigateTo = useNavigate();
 
   const departmentsArray = [
@@ -65,6 +65,7 @@ const AddNewDoctor = () => {
       formData.append("gender", gender);
       formData.append("doctorDepartment", doctorDepartment);
       formData.append("docAvatar", docAvatar);
+      setLoading(true)
       await axiosInstance
         .post(`${import.meta.env.VITE_API_BURL}/api/v1/user/doctor/addnew`, formData, {
 
@@ -73,6 +74,7 @@ const AddNewDoctor = () => {
         .then((res) => {
           toast.success(res.data.message);
           setIsAuthenticated(true);
+          setLoading(false)
           navigateTo("/");
           setFirstName("");
           setLastName("");
@@ -84,6 +86,7 @@ const AddNewDoctor = () => {
           setPassword("");
         });
     } catch (error) {
+      setLoading(false)
       toast.error(error.response.data.message);
     }
   };
@@ -173,7 +176,9 @@ const AddNewDoctor = () => {
                   );
                 })}
               </select>
-              <button style={{ background: "red" }} type="submit">Register New Doctor</button>
+              <button style={{ background: "red" }} type="submit">
+                {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Add New Doctor"}
+              </button>
             </div>
           </div>
         </form>

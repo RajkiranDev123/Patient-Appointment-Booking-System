@@ -46,8 +46,8 @@ const Messages = () => {
   }
 
   return (
-    <section style={{textAlign:"center"}} className="page messages">
-      <h1 style={{ color: "grey",fontSize:14 }}>MESSAGE</h1>
+    <section style={{ textAlign: "center" }} className="page messages">
+      <h1 style={{ color: "grey", fontSize: 14 }}>MESSAGE</h1>
       <div className="banner">
         {messages && messages.length > 0 ? (
           messages.map((element) => {
@@ -66,16 +66,15 @@ const Messages = () => {
                   <p>
                     Phone: <span>{element.phone}</span>
                   </p>
-                  <p>
-                    Message:
-                    <p>
-                      <textarea rows="3" cols="20">
-                        {element?.message}
-                      </textarea>
+                  <div>
+                    <p>Message:</p>
 
-                    </p>
 
-                  </p>
+                    <textarea rows="3" cols="20" defaultValue={element?.message} readOnly />
+
+
+
+                  </div>
                 </div>
               </div>
             );
@@ -86,7 +85,7 @@ const Messages = () => {
       </div>
 
       {/* pagination */}
-      <div style={{ display: "flex", justifyContent: "center",marginTop:5 }}>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: 5 }}>
         <Stack spacing={2}>
           <Pagination color="primary" onChange={changePage} page={page} count={pageCount} />
         </Stack>
