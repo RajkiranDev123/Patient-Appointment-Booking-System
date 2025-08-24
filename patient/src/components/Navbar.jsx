@@ -43,7 +43,7 @@ const Navbar = () => {
                             <TfiWrite size={18} />   Appointment
                         </Link>}
 
-                        <a href="https://rajadminmedicalai.netlify.app/login" target="_blank" rel="noopener noreferrer"><GrUserAdmin/>Admin Panel</a>
+                        <a href="https://rajadminmedicalai.netlify.app/login" target="_blank" rel="noopener noreferrer"><GrUserAdmin size={16}/>Admin Panel</a>
                     </div>
                     {isAuthenticated ? (
                         <button style={{ borderRadius: 3, background: "red", padding: 5, fontSize: 14 }} className="logoutBtn btn" onClick={handleLogout}>

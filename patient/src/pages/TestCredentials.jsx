@@ -35,7 +35,7 @@ const TestCredentials = () => {
         Patient Test Email&nbsp;&nbsp;&nbsp;:
         {!adminEmail ? (
           <span
-            onClick={() => handleCopy("rajtech645@gmail.com", "email")}
+            onClick={() => handleCopy("pat1@gmail.com", "email")}
             style={{
               cursor: "pointer",
               color: "blue",
@@ -73,7 +73,7 @@ const TestCredentials = () => {
         Patient Test Password :
         {!adminPass ? (
           <span
-            onClick={() => handleCopy("12345678", "pass")}
+            onClick={() => handleCopy("pat12345@A", "pass")}
             style={{
               cursor: "pointer",
               color: "blue",
