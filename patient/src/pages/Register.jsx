@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-
+import "../pages/loader.css"
 const Register = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
@@ -15,6 +15,8 @@ const Register = () => {
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
   const navigateTo = useNavigate();
 
@@ -37,6 +39,7 @@ const Register = () => {
       return
     }
     try {
+      setLoading(true)
       await axiosInstance
         .post(
           `/api/v1/user/patient/register`,
@@ -58,9 +61,11 @@ const Register = () => {
           setDob("");
           setGender("");
           setPassword("");
+          setLoading(false)
           navigateTo("/login")
         });
     } catch (error) {
+      setLoading(false)
       toast.error(error.response.data.message);
     }
   };
@@ -147,7 +152,10 @@ const Register = () => {
             </Link>
           </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button style={{ background: "red", cursor: "pointer" }} type="submit">Register</button>
+            <button style={{ background: "red", cursor: "pointer" }} type="submit">
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Register"}
+
+            </button>
           </div>
         </form>
       </div>

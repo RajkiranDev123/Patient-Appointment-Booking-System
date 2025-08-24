@@ -2,7 +2,7 @@ import axiosInstance from "../services/setupAxios"
 import { useEffect } from "react";
 import { useState } from "react";
 import { toast } from "react-toastify";
-
+import "../pages/loader.css"
 const AppointmentForm = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -17,6 +17,8 @@ const AppointmentForm = () => {
     const [doctorLastName, setDoctorLastName] = useState("");
     const [address, setAddress] = useState("");
     const [hasVisited, setHasVisited] = useState(false);
+  const [loading, setLoading] = useState(false);
+
 
     const departmentsArray = [
         "Pediatrics",
@@ -54,6 +56,7 @@ const AppointmentForm = () => {
             return
         }
         try {
+            setLoading(true)
             const hasVisitedBool = Boolean(hasVisited);
             const { data } = await axiosInstance.post(
                 `${import.meta.env.VITE_API_BURL}/api/v1/appointment/post`,
@@ -78,6 +81,7 @@ const AppointmentForm = () => {
                 }
             );
             toast.success(data.message);
+            setLoading(false)
             setFirstName(""),
                 setLastName(""),
                 setEmail(""),
@@ -92,6 +96,7 @@ const AppointmentForm = () => {
                 setHasVisited(""),
                 setAddress("");
         } catch (error) {
+            setLoading(false)
             toast.error(error.response.data.message);
         }
     };
@@ -223,7 +228,10 @@ const AppointmentForm = () => {
                             style={{ flex: "none", width: "25px" }}
                         />
                     </div>
-                    <button style={{ margin: "0 auto" }}>GET APPOINTMENT</button>
+                    <button style={{ margin: "0 auto" }}>
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Get Appointment"}
+
+                    </button>
                 </form>
             </div>
         </>

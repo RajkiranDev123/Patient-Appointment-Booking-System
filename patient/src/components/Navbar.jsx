@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { Context } from "../main";
 import { FaHome } from "react-icons/fa";
 import { TfiWrite } from "react-icons/tfi";
+import { GiSyringe } from "react-icons/gi";
 const Navbar = () => {
     const [show, setShow] = useState(false);
     const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -30,9 +31,9 @@ const Navbar = () => {
         <>
             <nav className={"container"}>
                 <div className="logo">
-                    <p>Raj Medical</p>
+                    <p style={{fontWeight:"bold",color:"green"}}> <GiSyringe/>Raj Medical</p>
                 </div>
-                <div className={show ? "navLinks showmenu" : "navLinks"}>
+                <div className={!show ? "navLinks showmenu" : "navLinks"}>
                     <div className="links">
                         <Link style={{ display: "flex", alignItems: "center" }} to={"/"} onClick={() => setShow(!show)}>
                             <FaHome size={20} />  Home
@@ -45,7 +46,7 @@ const Navbar = () => {
                         </Link> */}
                     </div>
                     {isAuthenticated ? (
-                        <button style={{background:"red",padding:5,fontSize:14}} className="logoutBtn btn" onClick={handleLogout}>
+                        <button style={{borderRadius:3,background:"red",padding:5,fontSize:14}} className="logoutBtn btn" onClick={handleLogout}>
                             LOGOUT
                         </button>
                     ) : (

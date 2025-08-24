@@ -1,7 +1,8 @@
 import axios from "axios";
-import  { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import "../pages/loader.css"
 
 const MessageForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -9,6 +10,8 @@ const MessageForm = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
   const handleMessage = async (e) => {
 
@@ -19,17 +22,19 @@ const MessageForm = () => {
 
     }
     try {
+      setLoading(true)
       await axios
         .post(
           `${import.meta.env.VITE_API_BURL}/api/v1/message/send`,
           { firstName, lastName, email, phone, message },
           {
-     
+
             headers: { "Content-Type": "application/json" },
           }
         )
         .then((res) => {
           toast.success(res.data.message);
+          setLoading(false)
           setFirstName("");
           setLastName("");
           setEmail("");
@@ -37,6 +42,8 @@ const MessageForm = () => {
           setMessage("");
         });
     } catch (error) {
+      setLoading(false)
+
       toast.error(error.response.data.message);
     }
   };
@@ -45,10 +52,10 @@ const MessageForm = () => {
     <>
       <div className="container form-component message-form">
         <p>How to start ?</p>
-        <p>1. First <Link to={"/register"}>Register</Link> and then login!</p>
+        <p>1. First <Link to={"/register"}>Register</Link> and then <Link to={"/login"}>Login</Link> </p>
         <p>2. Go to appointment for booking appointment!</p>
 
-        <p style={{textAlign:""}}>Or Send us a message! We will get back to you!</p>
+        <p style={{ textAlign: "" }}>Or Send us a message! We will get back to you!</p>
 
 
         <h2 style={{ color: "grey" }}>Send Us A Message</h2>
@@ -89,7 +96,9 @@ const MessageForm = () => {
             onChange={(e) => setMessage(e.target.value)}
           />
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button style={{ background: "green",cursor:"pointer" }} type="submit">Send</button>
+            <button style={{ background: "green", cursor: "pointer" }} type="submit">
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Send"}
+            </button>
           </div>
         </form>
         <img src="/Vector.png" alt="vector" />

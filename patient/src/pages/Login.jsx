@@ -4,12 +4,13 @@ import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import TestCredentials from "./TestCredentials"
-
+import "../pages/loader.css"
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
 
   const navigateTo = useNavigate();
@@ -21,6 +22,7 @@ const Login = () => {
       return
     }
     try {
+      setLoading(true)
       await axiosInstance
         .post(
           `/api/v1/user/login`,
@@ -36,11 +38,13 @@ const Login = () => {
           setIsAuthenticated(true);
           setEmail("");
           setPassword("");
+          setLoading(false)
           navigateTo("/");
 
 
         });
     } catch (error) {
+      setLoading(false)
       toast.error(error.response.data.message);
     }
   };
@@ -87,7 +91,10 @@ const Login = () => {
             </Link>
           </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button style={{ background: "green" }} type="submit">Login</button>
+            <button style={{ background: "green" }} type="submit">
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Login"}
+
+            </button>
           </div>
         </form>
       </div>

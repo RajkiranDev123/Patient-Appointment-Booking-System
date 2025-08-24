@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Box from '@mui/material/Box';
 import Modal1 from '@mui/material/Modal';
-
+import "../pages/loader.css"
 import axios from "axios"
 const style = {
   position: 'absolute',
@@ -22,6 +22,8 @@ const Hero = ({ }) => {
   const [open1, setOpen1] = useState(false);
   const [fever, setFever] = useState("");
   const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
+
 
 
   const handleClose1 = () => { setOpen1(false); setFever(""); setResult("") };
@@ -31,14 +33,20 @@ const Hero = ({ }) => {
   // 
 
   const ask = async () => {
-    const { data } = await axios.post(
-      `${import.meta.env.VITE_API_BURL}/api/v1/ai/ask`, {
-      question: fever
-    }
+    try {
+      setLoading(true)
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_BURL}/api/v1/ai/ask`, {
+        question: fever
+      }
 
-    );
-    // console.log(data)
-    setResult(data?.data);
+      );
+      // console.log(data)
+      setResult(data?.data);
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+    }
 
   };
 
@@ -62,12 +70,16 @@ const Hero = ({ }) => {
       {/* ai */}
 
 
-      <p style={{ color: "red", textAlign: "center" }}>Try our AI doctors too before scrolling down!</p>
       <br />
-      <div style={{ gap: 16, justifyContent: "center", border: "1px solid grey", padding: 14, display: "flex", flexWrap: "wrap" }}>
+      <div style={{ gap: 16, justifyContent: "center", border: "1px solid grey", padding: 14, }}>
+        <p style={{ color: "red", textAlign: "center", fontWeight: "bold" }}>Try our AI doctor too before scrolling down!</p>
+        <br />
 
-        <div>
-          <p onClick={handleOpen1} style={{fontWeight:"bold", padding: 3, background: "green", borderRadius: 4, color: "white", cursor: "pointer" }}>Click here for AI doctor for best food and tablets!</p>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <span onClick={handleOpen1} style={{
+            fontWeight: "bold", padding: 9, background: "green", borderRadius: 4,
+            color: "white", cursor: "pointer"
+          }}>Click here for AI doctor for best food and tablets!</span>
         </div>
 
 
@@ -104,11 +116,12 @@ const Hero = ({ }) => {
 
             <button onClick={() => ask()}
               style={{ margin: 5, padding: 5, width: "100%", border: "none", background: "green", color: "white", cursor: "pointer" }}>
-              {fever ? "Click here to ask" : "type you fever above!"}
+              {loading ? <div style={{ display: "flex", justifyContent: "center" }}><div className="loader"></div></div> : "Ask"}
+
             </button>
             <div >
               <p>Result : </p>
-              {result && <div style={{ overflowY: "scroll", height: 150,fontSize:14,fontWeight:"bold" }}>
+              {result && <div style={{ overflowY: "scroll", height: 150, fontSize: 14, fontWeight: "bold" }}>
                 {result}
               </div>}
             </div>
