@@ -10,11 +10,15 @@ import {
     isPatientAuthenticated,
 } from "../middlewares/auth.js";
 
+import {getMetaAppointments} from "../controller/metaController.js"
+
 const router = express.Router();
 
 router.post("/post", isPatientAuthenticated, postAppointment);
 router.get("/getall", isAdminAuthenticated, getAllAppointments);
 router.put("/update/:id", isAdminAuthenticated, updateAppointmentStatus);
 router.delete("/delete/:id", isAdminAuthenticated, deleteAppointment);
+router.get("/meta", getMetaAppointments);
+
 
 export default router;
