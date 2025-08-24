@@ -7,6 +7,7 @@ import { Context } from "../main";
 import { FaHome } from "react-icons/fa";
 import { TfiWrite } from "react-icons/tfi";
 import { GiSyringe } from "react-icons/gi";
+import { GrUserAdmin } from "react-icons/gr";
 const Navbar = () => {
     const [show, setShow] = useState(false);
     const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -42,7 +43,7 @@ const Navbar = () => {
                             <TfiWrite size={18} />   Appointment
                         </Link>}
 
-                        <a href="https://rajadminmedicalai.netlify.app/login" target="_blank" rel="noopener noreferrer">Admin Panel</a>
+                        <a href="https://rajadminmedicalai.netlify.app/login" target="_blank" rel="noopener noreferrer"><GrUserAdmin/>Admin Panel</a>
                     </div>
                     {isAuthenticated ? (
                         <button style={{ borderRadius: 3, background: "red", padding: 5, fontSize: 14 }} className="logoutBtn btn" onClick={handleLogout}>

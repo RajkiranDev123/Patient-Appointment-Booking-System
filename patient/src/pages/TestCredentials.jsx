@@ -35,7 +35,7 @@ const TestCredentials = () => {
         Patient Test Email&nbsp;&nbsp;&nbsp;:
         {!adminEmail ? (
           <span
-            onClick={() => handleCopy("rajkir783@gmail.com", "email")}
+            onClick={() => handleCopy("rajtech645@gmail.com", "email")}
             style={{
               cursor: "pointer",
               color: "blue",
