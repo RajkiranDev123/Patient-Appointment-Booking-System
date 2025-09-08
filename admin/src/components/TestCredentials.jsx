@@ -33,7 +33,7 @@ const TestCredentials = () => {
           gap: 2,
         }}
       >
-        Patient Test Email&nbsp;&nbsp;&nbsp;:
+        Admin Test Email&nbsp;&nbsp;&nbsp;:
         {!adminEmail ? (
           <span
             onClick={() => handleCopy("sadmin@gmail.com", "email")}
@@ -71,7 +71,7 @@ const TestCredentials = () => {
           gap: 2,
         }}
       >
-        Patient Test Password :
+        Admin Test Password :
         {!adminPass ? (
           <span
             onClick={() => handleCopy("kgfh123@Ab", "pass")}
